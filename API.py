@@ -21,11 +21,14 @@ class WeatherAPI:
         data = self._get(url, params)
         
         return {
-            "city": data["name"],
-            "country": data["sys"]["country"],
-            "temp": data["main"]["temp"],
-            "feels_like": data["main"]["feels_like"],
-            "humidity": data["main"]["humidity"],
-            "wind_speed": data["wind"]["speed"],
-            "condition": data["weather"][0]["description"].title(),
+            "city":          data["name"],
+            "country":       data["sys"]["country"],
+            "temp":          data["main"]["temp"],
+            "feels_like":    data["main"]["feels_like"],
+            "humidity":      data["main"]["humidity"],
+            "wind_speed":    data["wind"]["speed"],
+            "condition":     data["weather"][0]["description"].title(),
         }
+        
+        
+        
