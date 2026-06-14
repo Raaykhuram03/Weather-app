@@ -30,20 +30,21 @@ class WeatherAPI:
             "condition":     data["weather"][0]["description"].title(),
         }
         
-        def fetch_forecast(self, city: str) -> list[dict]:
-            url = f"{self.BASE_URL}/forecast"
-            params = {"q": city, "appid": self.api_key, "units": "metric"}
-            data = self._get(url, params)
-            forecast_list: list[dict] = []
-            for item in data["list"]:
-                if "12:00:00" in item["dt_txt"]:
-                    date_obj = datetime.strptime(item["dt_txt"], "%Y-%m-%d %H:%M:%S")
-                    forecast_list.append({
-                        "day": date_obj.strftime(%A),
-                        "temp": item["main"]["temp"],
-                        "condition": item["weather"][0]["description"].title(),
-                    })
-            return forecast_list
+       
+    def fetch_forecast(self, city: str) -> list[dict]:
+        url = f"{self.BASE_URL}/forecast"
+        params = {"q": city, "appid": self.api_key, "units": "metric"}
+        data = self._get(url, params)
+        forecast_list: list[dict] = []
+        for item in data["list"]:
+            if "12:00:00" in item["dt_txt"]:
+                date_obj = datetime.strptime(item["dt_txt"], "%Y-%m-%d %H:%M:%S")
+                forecast_list.append({
+                    "day":       date_obj.strftime("%A"),
+                    "temp":      item["main"]["temp"],
+                    "condition": item["weather"][0]["description"].title(),
+                })
+        return forecast_list
             
             
             
