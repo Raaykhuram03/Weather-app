@@ -30,5 +30,11 @@ class WeatherAPI:
             "condition":     data["weather"][0]["description"].title(),
         }
         
-        
+        def fetch_forecast(self, city: str) -> list[dict]:
+            url = f"{self.BASE_URL}/forecast"
+            params = {"q": city, "appid": self.api_key, "units": "metric"}
+            data = self._get(url, params)
+            forecast_list: list[dict] = []
+            
+            
         
