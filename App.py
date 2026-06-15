@@ -32,4 +32,29 @@ class WeatherAppUI:
             sys.exit(1)
        self._build_layout()
 
-   
+    def _build_layout(self) -> None:
+
+      self._build_search_bar()
+       self._build_metrics_panel()
+       self._build_chart_panel()
+
+       def _build_search_bar(self) -> None:
+
+       frame = tk.Frame(self.root, bg=self.BG_DARK)
+        frame.pack(pady=20)
+        self.city_entry = tk.Entry(
+              frame, font=("Helvetica", 14), width=22,
+             bd=0, highlightthickness=1, highlightbackground="#475569",
+        )
+
+       self.city_entry.grid(row=0, column=0, padx=10, ipady=4)
+        self.city_entry.focus()
+         self.city_entry.bind("<Return>", lambda _e: self._run_search())
+        tk.Button(
+            frame, text="Search", font=("Helvetica", 11, "bold"),
+             bg=self.ACCENT, fg="white",
+             activebackground=self.ACCENT_HV, activeforeground="white",
+             bd=0, padx=15, cursor="hand2",
+              command=self._run_search,
+        ).grid(row=0, column=1)
+
