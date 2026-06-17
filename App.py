@@ -84,3 +84,46 @@ class WeatherAppUI:
            bg=self.BG_PANEL, fg="#475569",
         )
         self.chart_placeholder.pack(pady=40)
+    def _run_search(self) -> None:
+        city = self.city_entry.get().strip()
+        if not city:
+            messagebox.showwarning("Input Required", "Please enter a city name.")
+            return
+        try:
+            current = self.api_engine.fetch_current_weather(city)
+            forecast = self.api_engine.fetch_forecast(city)
+        except requests.exceptions.HTTPError as err:
+            status = err.response.status_code if err.response is not None else "?"
+            if status == 404:
+                messagebox.showerror("City Not Found",
+                                      f'"{city}" was not recognised.\nCheck the spelling and try again.')
+            elif status == 401:
+                messagebox.showerror("API Key Invalid",
+                                      "The API key was rejected. Check OPENWEATHER_API_KEY in .env.")
+            else:
+                messagebox.showerror("HTTP Error", f"Request failed with status {status}.")
+            return
+        except requests.exceptions.ConnectionError:
+            messagebox.showerror("Connection Error",
+                                  "Could not reach the weather service.\nCheck your internet connection.")
+            return
+        except Exception as err:
+            messagebox.showerror("Unexpected Error", str(err))
+            return
+        self._update_metrics(current)
+        self._update_chart(forecast)
+ 
+    def _update_metrics(self, current: dict) -> None:
+        self.metrics_label.config(
+            text=(
+                f"📍 {current['city']}, {current['country']}   |   "
+                f"🌤  {current['condition']}\n"
+                f"🌡  {current['temp']}°C  (feels like {current['feels_like']}°C)   |   "
+                f"💧 Humidity: {current['humidity']}%   |   "
+                f"💨 Wind: {current['wind_speed']} m/s"
+            ),
+            font=("Consolas", 11),
+            fg=self.TEXT_BRIGHT,
+            justify="left",
+        )
+        self.metrics_label.pack(pady=15, padx=15, anchor="w")
