@@ -127,3 +127,14 @@ class WeatherAppUI:
             justify="left",
         )
         self.metrics_label.pack(pady=15, padx=15, anchor="w")
+
+    def _update_chart(self, forecast: list) -> None:
+        self.chart_placeholder.pack_forget()
+        WeatherAnalytics.embed_temperature_trend(self.chart_frame, forecast)
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    WeatherAppUI(root)
+    root.mainloop()
+    
