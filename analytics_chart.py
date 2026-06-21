@@ -35,3 +35,28 @@ class WeatherAnalytics:
         temp_max = max(temps)
         padding  = max(2.0, (temp_max - temp_min) * 0.25)
         ax.set_ylim(temp_min - padding, temp_max + padding)    
+
+        for day, temp in zip(days, temps):
+            ax.annotate(
+                f"{temp:.1f}°C", (day, temp),
+                textcoords="offset points", xytext=(0, 10),
+                ha="center", color=WeatherAnalytics.ANNOTATION,
+                fontsize=8, fontweight="bold",
+            )
+
+        ax.tick_params(colors=WeatherAnalytics.LABEL, labelsize=9)
+        ax.set_ylabel("°C", color=WeatherAnalytics.LABEL, fontsize=9)
+
+        for spine_name, visible in [("bottom", True), ("left", True), ("top", False), ("right", False)]:
+            spine = ax.spines[spine_name]
+            spine.set_visible(visible)
+            if visible:
+                spine.set_color(WeatherAnalytics.SPINE)
+
+        ax.grid(True, linestyle="--", alpha=0.15, color="#cbd5e1")
+        fig.tight_layout()
+
+        canvas = FigureCanvasTkAgg(fig, master=master_frame)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill="both", expand=True)
+        plt.close(fig)
