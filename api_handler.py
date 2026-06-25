@@ -15,7 +15,7 @@ class WeatherAPI:
             )
             
             
-     def fetch_current_weather(self, city: str) -> dict:
+    def fetch_current_weather(self, city: str) -> dict:
         url = f"{self.BASE_URL}/weather"
         params = {"q": city, "appid": self.api_key, "units": "metric"}
         data = self._get(url, params)
