@@ -47,7 +47,7 @@ class WeatherAPI:
         return forecast_list
             
     def _get(self, url: str, params: dict) -> dict:
-        response = request.get(url, params = params, timeout = 10)
+        response = requests.get(url, params = params, timeout = 10)
         response.raise_for_status()
         return response.json()
     
